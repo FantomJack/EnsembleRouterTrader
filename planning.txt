@@ -1,0 +1,83 @@
+Žiadny model nie je konzistentne najlepší. Navrhujem adaptívny ensemple, ktorý dinamicky vyberá alebo váži model podľa aktuálneho trhového režimu.
+
+
+QUESTION: Čo by som si mal naplánovať predtým než začnem pracovať na tejto diplomovke
+QUESTION: Čo by som si mal rozmyslieť a naplánovať, čo by som mal vedieť predtým než začnem programovať
+QUESTION: Aké sú dôležité a používané koncepty v algoritmickom obchodovaní?
+
+
+QUESTION: Mal by som pracovať s ticker dátami?
+
+Predikcia jednodnodňového returnu je vraj šum a je extrémne ovplyvnený správaním počas dňa, preto by sme to mali otestovať štatistickými testami, mohli by sme skúsiť zistiť nejakú koreláciu.
+
+
+TODO: Spýtať sa chatGPT aby navrhol testy na otestovanie tohto tvrdenia. Alebo nájsť vedecký papier, ktorý by to dostatočne potvrdil.
+
+Nový navrhovaný target je:
+  - 5 dňový future return (Close[t+5]-Close[t])/Close[t]
+  - 10 dňový future return
+  - logaritmický return
+
+
+Encoder length= (30, 60, 90, 120)
+
+Prípadne môžeme pridať aj 1 dńový return, iba na potvrdenie, toho, že je menej efektívny.
+
+
+QUESTION: Ako sa dá predikovať pravdepodobnosť, že za 5 dní bude cena vyššie?
+
+
+QUESTION: Ako sa dá predpoveď pravdepodobnosti nárastu ceny preniesť do generácie signálu - SELL, HOLD, BUY. Generácia signálu je predsa niečo čo si vravel, že nemám robiť iba za pomoci TFT.
+
+QUESTION: Ako sa dá vyhodnotiť istota v túto predpoveď a miera nárastu. Ak by som mal viacero aktív, pre ktoré predikujem nárast, ako by som sa mal rozhodnúť akou mierou zainvestujem do ktorého aktíva? OPTIMALIZATION
+
+
+TODO: Do datasetu vypočítať market features:
+  - growth (ako popísaný hore), SMA5, volatility, RSI, ATR, CMF, month, day_of_week, 
+  - EMA (20, 50, 200), MACD, Bollinger Width, ADX, OBV, VWAP (pre intraday),
+  - rolling beta, rolling Sharpe, rolling volatility (20, 60)
+
+
+TODO: Pridať detekciu režimu trhu, ale najprv zistiť aké režimy sa v trhoch vôbec vyskytujú, na čo si treba dávať pozor.
+TODO  Pre každý režim trhu vytvoriť jeden detektor:
+  - trend, range, volatile
+  - Bull TFT, Bear TFT, Sideways TFT
+
+TODO pridať viacero modelov, ktoré môžem switchovať pomocou Meta Ensemble Routeru
+QUESTION: Ako špecializovať jednotlivé modely?
+
+Pre normalizáciu použiť robust scaling, median, IQR
+
+
+QUESTION ako by sa dala využiť miera neistoty? (Q90 - Q10)
+  - ak je veľké model si nie je istý a nemal by obchodovať
+
+
+Do obchodnej stratégie zahrnúť aj confidence, market trend a volatilitu.
+
+
+QUESTION: Ako by sa dala predikovať alpha / excess return?
+   - otázky ako outperformuje AAPL S&P500 ?  (HSIT, AlphaMix, TRA)
+
+
+
+
+Backtesting:
+    - commision
+    - slippage
+    - position sizing
+    - kelly
+    - ATR stop
+    - Max Exposure
+    - Portfolio
+
+
+Experimenty:
+TFT, MLP, XGB, CatBoost -> Ensemble -> Ensemble + RL
+    - CAGR
+    - Sharpe
+    - Sortino
+    - Calmar
+    - Max Drawdown
+    - Profit Factor
+    - Win Rate
