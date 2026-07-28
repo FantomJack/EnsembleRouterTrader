@@ -10,6 +10,8 @@ QUESTION: Mal by som pracovať s ticker dátami?
 
 Predikcia jednodnodňového returnu je vraj šum a je extrémne ovplyvnený správaním počas dňa, preto by sme to mali otestovať štatistickými testami, mohli by sme skúsiť zistiť nejakú koreláciu.
 
+TODO vyhrelit hustotu pravdepodobnosti / vyskytu pre denny return
+
 
 TODO: Spýtať sa chatGPT aby navrhol testy na otestovanie tohto tvrdenia. Alebo nájsť vedecký papier, ktorý by to dostatočne potvrdil.
 
@@ -81,3 +83,12 @@ TFT, MLP, XGB, CatBoost -> Ensemble -> Ensemble + RL
     - Max Drawdown
     - Profit Factor
     - Win Rate
+
+
+
+CSV -> Loader -> Cleaner -> Feature Pipeline -> Target Builder -> Dataset Builder -> Models
+MarketData -> FeaturePipeline -> TargetBuilder -> SplitStrategy -> FeatureDataset -> DatasetAdapter -> Model
+
+
+
+Celý projekt je písaný pomocou princípou SOLID

@@ -1,0 +1,20 @@
+EMA10
+EMA20
+EMA50
+EMA100
+EMA200
+
+SMA10
+SMA20
+SMA50
+
+MACD
+MACD Signal
+MACD Histogram
+
+ADX
+Aroon Up
+Aroon Down
+
+Ichimoku
+Parabolic SAR
