@@ -1,5 +1,8 @@
+from abc import ABC, abstractmethod
 
-class FeatureGeneratorInterface:
+from src.data.market_frame import MarketFrame
+
+class FeatureGeneratorInterface(ABC):
     """
     Base class for every feature generator.
     """
@@ -7,22 +10,14 @@ class FeatureGeneratorInterface:
     @property
     @abstractmethod
     def name(self) -> str:
-        ...
-
-    @property
-    @abstractmethod
-    def produced_features(self) -> list[str]:
-        """
-        Names of columns that this generator produces.
-        """
-        ...
+        pass
 
     @abstractmethod
     def transform(
         self,
         frame: MarketFrame,
-    ) -> MarketFrame:
+    ) -> None:
         """
-        Adds new features into MarketFrame.
+        Adds features directly into MarketFrame.
         """
-        ...
+        pass

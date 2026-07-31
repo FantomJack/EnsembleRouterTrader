@@ -1,22 +1,16 @@
-
-
+from __future__ import annotations
+from src.data.market_frame import MarketFrame
+from feature_generator import FeatureGeneratorInterface
 
 class FeaturePipeline:
     def __init__(self, *generators: FeatureGeneratorInterface):
         self.generators = generators
 
-    def transform(self, market_data: MarketData) -> pd.DataFrame:
+    def run(self, frame: MarketFrame,
+    ) -> MarketFrame:
         for generator in self.generators:
-            market_data = generator.transform(market_data)
-        return market_data
-
-
-
-
-
-
-
-
+            generator.transform(frame)
+        return frame
 
 pipeline = FeaturePipeline(
 
@@ -28,7 +22,9 @@ pipeline = FeaturePipeline(
 
     # VolumeFeatures(),
 
+    # TrendFeatures(),
+    # MomentumFeatures(),
+    # VolatilityFeatures(),
+
 )
 
-# TODO:
-# market_data: pipeline.transform(market_data)

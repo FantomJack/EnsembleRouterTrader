@@ -1,7 +1,7 @@
 from pathlib import Path
 import pandas as pd
 
-from preprocessing.market_data import MarketData
+from market_frame import MarketFrame
 
 
 class MarketDataLoader:
@@ -11,7 +11,7 @@ class MarketDataLoader:
     def load_directory(
             self,
             directory: Path
-    ) -> MarketData:
+    ) -> MarketFrame:
         frames = []
 
         for csv_file in sorted(directory.glob("*.csv")):
@@ -35,4 +35,4 @@ class MarketDataLoader:
             .reset_index(drop=True)
         )
 
-        return MarketData(data)
+        return MarketFrame(data)

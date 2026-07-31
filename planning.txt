@@ -87,8 +87,15 @@ TFT, MLP, XGB, CatBoost -> Ensemble -> Ensemble + RL
 
 
 CSV -> Loader -> Cleaner -> Feature Pipeline -> Target Builder -> Dataset Builder -> Models
-MarketData -> FeaturePipeline -> TargetBuilder -> SplitStrategy -> FeatureDataset -> DatasetAdapter -> Model
+MarketFrame -> FeaturePipeline -> TargetBuilder -> SplitStrategy -> FeatureDataset -> DatasetAdapter -> Model
 
 
+TODO: but somewhere else
+ Aroon Up
+ Aroon Down
+ Market Regime as feature
+ Ichimoku (ichimoku_conversion, ichimoku_base, ...
+ Tenkan-sen, Kijun-sen, Senkou Span A, Senkou Span B, Chikou Span)
+ Parabolic SAR
 
-Celý projekt je písaný pomocou princípou SOLID
+TODO: Stochastic RSI, CCI, Momentum, TSI, Ultimate Oscillator

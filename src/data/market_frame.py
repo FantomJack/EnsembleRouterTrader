@@ -1,7 +1,8 @@
-from dataclasses import dataclass
-from typing import Optional
+from __future__ import annotations
+from dataclasses import dataclass, field
 import pandas as pd
 
+from src.core.columns import Columns
 
 @dataclass(slots=True)
 class MarketFrame:
@@ -19,43 +20,26 @@ class MarketFrame:
             raise EmptyDatasetException()
 
         self.data = self.data.sort_values(
-            [self.ticker_column, self.datetime_column]
+            [Columns.TICKER, Columns.DATE]
         )
 
         self.data.reset_index(drop=True, inplace=True)
 
         if self.data.duplicated(
-                [self.ticker_column, self.datetime_column]
+                [Columns.TICKER, Columns.DATE]
         ).any():
             raise DuplicateRowsException()
 
 
     data: pd.DataFrame
 
-    ticker_column: str = "Ticker"
-    datetime_column: str = "Date"
-
-    open_column: str = "Open"
-    high_column: str = "High"
-    low_column: str = "Low"
-    close_column: str = "Close"
-    volume_column: str = "Volume"
-
-    def copy(self) -> "MarketData":
-        return MarketData(
-            data=self.data.copy(deep=True),
-            ticker_column=self.ticker_column,
-            datetime_column=self.datetime_column,
-            open_column=self.open_column,
-            high_column=self.high_column,
-            low_column=self.low_column,
-            close_column=self.close_column,
-            volume_column=self.volume_column,
-        )
+    feature_columns: list[str] = field(default_factory=list)
+    target_columns: list[str] = field(default_factory=list)
+    metadata: dict = field(default_factory=dict)
 
     @property
     def tickers(self) -> list[str]:
-        return sorted(self.data[self.ticker_column].unique())
+        return sorted(self.data[Columns.TICKER].unique())
 
     @property
     def columns(self) -> list[str]:
@@ -63,22 +47,49 @@ class MarketFrame:
 
     @property
     def start_date(self):
-        return self.data[self.datetime_column].min()
+        return self.data[Columns.DATE].min()
 
     @property
     def end_date(self):
-        return self.data[self.datetime_column].max()
+        return self.data[Columns.DATE].max()
 
     @property
     def date_range(self):
         return (
-            self.data[self.datetime_column].min(),
-            self.data[self.datetime_column].max(),
+            self.data[Columns.DATE].min(),
+            self.data[Columns.DATE].max(),
         )
 
     def get_ticker(self, ticker: str) -> pd.DataFrame:
         return (
-            self.data[self.data[self.ticker_column] == ticker]
-            .sort_values(self.datetime_column)
+            self.data[self.data[Columns.TICKER] == ticker]
+            .sort_values(Columns.DATE)
             .reset_index(drop=True)
         )
+
+    def add_features(
+            self,
+            features: pd.DataFrame,
+    ) -> None:
+
+        duplicate = set(features.columns) & set(self.data.columns)
+
+        if duplicate:
+            raise ValueError(
+                f"Features already exist: {duplicate}"
+            )
+
+        self.data = pd.concat(
+            [self.data, features],
+            axis=1,
+        )
+
+        self.feature_columns.extend(features.columns)
+
+    def add_target(self, name: str) -> None:
+        if name not in self.target_columns:
+            self.target_columns.append(name)
+
+    def iter_tickers(self):
+        for _, group in self.data.groupby(Columns.TICKER, sort=False):
+            yield group
