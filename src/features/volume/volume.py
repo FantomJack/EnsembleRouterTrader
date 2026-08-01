@@ -3,13 +3,9 @@ from __future__ import annotations
 from ta.volume import (
     AccDistIndexIndicator,
     ChaikinMoneyFlowIndicator,
-    EaseOfMovementIndicator,
-    ForceIndexIndicator,
-    MFIIndicator,
     NegativeVolumeIndexIndicator,
     OnBalanceVolumeIndicator,
     VolumePriceTrendIndicator,
-    VolumeWeightedAveragePrice
 )
 
 from core.columns import Columns
@@ -49,17 +45,6 @@ class VolumeFeatures(FeatureGeneratorInterface):
             # Chaikin Money Flow
             generated.loc[idx, "chaikin"] = ChaikinMoneyFlowIndicator(high, low, close, volume).chaikin_money_flow()
 
-            # Ease if movement
-            eom = EaseOfMovementIndicator(high, low, volume)
-            generated.loc[idx, "ease_of_movement"] = eom.ease_of_movement()
-            generated.loc[idx, "sma_eom"] = eom.sma_ease_of_movement()
-
-            # Force Index Indicator
-            generated.loc[idx, "force_index"] = ForceIndexIndicator(close, volume).force_index()
-
-            # Money Flow Index
-            generated.loc[idx, "mfi"] = MFIIndicator(high, low, close, volume).money_flow_index()
-
             # Negative Volume Index
             generated.loc[idx, "negative_volume"] = NegativeVolumeIndexIndicator(close, volume).negative_volume_index()
 
@@ -71,12 +56,6 @@ class VolumeFeatures(FeatureGeneratorInterface):
             # Volume-price trend
             generated.loc[idx, "vpt"] = VolumePriceTrendIndicator(close, volume).volume_price_trend()
 
-            # Volume Weighted Average Price
-            vwap = VolumeWeightedAveragePrice(high, low, close, volume).volume_weighted_average_price()
-            generated.loc[idx, "vwap"] = vwap
-            generated.loc[idx, "price_to_vwap"] = (close - vwap) / vwap
-
-#
             # Relative Volume
             volume_ma = volume.rolling(self._volume_window).mean()
 
