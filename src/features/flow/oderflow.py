@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from numpy import sign
+import pandas as pd
 
 from core.columns import Columns
 from src.features.feature_generator import FeatureGeneratorInterface
@@ -29,7 +30,7 @@ class VolumeFeatures(FeatureGeneratorInterface):
 
     def transform(self, frame: MarketFrame) -> None:
 
-        generated = frame.data
+        generated = pd.DataFrame(index = frame.data.index)
 
         for group in frame.iter_tickers():
 
@@ -69,3 +70,5 @@ class VolumeFeatures(FeatureGeneratorInterface):
             vwap = VolumeWeightedAveragePrice(high, low, close, volume).volume_weighted_average_price()
             generated.loc[idx, "vwap"] = vwap
             generated.loc[idx, "price_to_vwap"] = (close - vwap) / vwap
+
+        frame.add_features(generated)

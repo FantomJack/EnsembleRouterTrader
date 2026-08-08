@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import pandas as pd
 from ta.volume import (
     AccDistIndexIndicator,
     ChaikinMoneyFlowIndicator,
@@ -28,7 +29,7 @@ class VolumeFeatures(FeatureGeneratorInterface):
 
     def transform(self, frame: MarketFrame) -> None:
 
-        generated = frame.data
+        generated = pd.DataFrame(index = frame.data.index)
 
         for group in frame.iter_tickers():
 
