@@ -39,9 +39,7 @@ class TrendFeatures(FeatureGeneratorInterface):
         frame: MarketFrame,
     ) -> None:
 
-        df = frame.data
-
-        generated = pd.DataFrame(index=df.index)
+        generated = pd.DataFrame(index=frame.data.index)
 
         for group in frame.iter_tickers():
 
